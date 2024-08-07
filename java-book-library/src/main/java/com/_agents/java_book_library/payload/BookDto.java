@@ -16,6 +16,6 @@ public class BookDto {
     private String genre;
     private Double price;
     private Boolean available;
-    private AuthorDto authorDto;
+    private Long authorId;
 
 }

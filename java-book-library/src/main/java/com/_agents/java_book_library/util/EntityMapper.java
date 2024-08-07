@@ -9,6 +9,8 @@ import com._agents.java_book_library.payload.BookDto;
 import com._agents.java_book_library.payload.LoanDto;
 import com._agents.java_book_library.payload.MemberDto;
 
+import java.util.List;
+
 public class EntityMapper {
 
     public static Author mapToAuthor(AuthorDto authorDto) {
@@ -37,11 +39,11 @@ public class EntityMapper {
                 .build();
     }
 
-    public static Loan mapToLoan(LoanDto loanDto, Book book, Member member) {
+    public static Loan mapToLoan(LoanDto loanDto, List<Book> books, Member member) {
         return Loan.builder()
                 .loanDate(loanDto.getLoanDate())
                 .returnDate(loanDto.getReturnDate())
-                .book(book)
+                .books(books)
                 .member(member)
                 .build();
     }

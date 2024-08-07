@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,9 +21,8 @@ public class Loan {
     private LocalDate loanDate;
     private LocalDate returnDate;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @OneToMany(mappedBy = "loan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Book> books;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "member_id")
     private Member member;

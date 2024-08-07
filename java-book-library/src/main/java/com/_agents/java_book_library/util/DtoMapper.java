@@ -26,7 +26,7 @@ public class DtoMapper {
                 .genre(book.getGenre())
                 .price(book.getPrice())
                 .available(book.getAvailable())
-                .authorDto(mapToAuthorDto(book.getAuthor()))
+                .authorId(book.getAuthor().getId())
                 .build();
     }
 
@@ -35,7 +35,7 @@ public class DtoMapper {
                 .id(loan.getId())
                 .loanDate(loan.getLoanDate())
                 .returnDate(loan.getReturnDate())
-                .bookDto(mapToBookDto(loan.getBook()))
+                .books(loan.getBooks().stream().map(DtoMapper::mapToBookDto).toList())
                 .memberDto(mapToMemberDto(loan.getMember()))
                 .build();
     }

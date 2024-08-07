@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +17,7 @@ public class LoanDto {
     private Long id;
     private LocalDate loanDate;
     private LocalDate returnDate;
-    private BookDto bookDto;
+    private List<BookDto> books;
     private MemberDto memberDto;
 
 }
