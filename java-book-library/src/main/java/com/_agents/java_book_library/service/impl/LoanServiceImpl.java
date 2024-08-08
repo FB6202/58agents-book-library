@@ -19,12 +19,19 @@ public class LoanServiceImpl implements LoanService {
     private final MemberRepository memberRepository;
 
     @Override
-    public String loanBook(LoanDto loanDto) {
+    public String loanBooks(LoanDto loanDto) {
+        // check if member exists
+
+        // check if books exist
+
+        // check availability of books
+
+        // check amount of loans
         return null;
     }
 
     @Override
-    public String returnBook(LoanDto loanDto) {
+    public String returnBooks(LoanDto loanDto) {
         return null;
     }
 

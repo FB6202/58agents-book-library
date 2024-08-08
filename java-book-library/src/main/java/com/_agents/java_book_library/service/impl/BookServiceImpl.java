@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getAvailableBooks() {
+    public List<BookDto> getAvailableBooks() { // ToDo: update to refresh!
         List<Book> books = bookRepository.findAll();
         List<Book> availableBooks = books.stream().filter(Book::getAvailable).toList();
         return availableBooks.stream()
