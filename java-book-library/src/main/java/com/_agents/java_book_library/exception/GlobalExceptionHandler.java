@@ -1,5 +1,6 @@
 package com._agents.java_book_library.exception;
 
+import com._agents.java_book_library.exception.types.LoanAmountException;
 import com._agents.java_book_library.exception.types.ResourceAlreadyExistsException;
 import com._agents.java_book_library.exception.types.ResourceNotFoundException;
 import com._agents.java_book_library.exception.types.ResourceUnavailableException;
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public ResponseEntity<ErrorDetails> handleResourceAlreadyExistsException(ResourceNotFoundException exception,
+    public ResponseEntity<ErrorDetails> handleResourceAlreadyExistsException(ResourceAlreadyExistsException exception,
                                                                         WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
                 webRequest.getDescription(false), HttpStatus.BAD_REQUEST.toString());
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceUnavailableException.class)
     public ResponseEntity<ErrorDetails> handleResourceAlreadyExistsException(ResourceUnavailableException exception,
+                                                                             WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                webRequest.getDescription(false), HttpStatus.BAD_REQUEST.toString());
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LoanAmountException.class)
+    public ResponseEntity<ErrorDetails> handleLoanAmountException(LoanAmountException exception,
                                                                              WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
                 webRequest.getDescription(false), HttpStatus.BAD_REQUEST.toString());

@@ -22,8 +22,14 @@ public class Loan {
 
     @OneToMany(mappedBy = "loan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Book> books;
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Override
+    public String toString() {
+        return String.format("(id: %s; loanDate: %s; returnDate: %s, member: %s)",
+                id, loanDate, returnDate, member.getUsername());
+    }
 
 }

@@ -26,4 +26,10 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Loan> loans;
 
+    @Override
+    public String toString() {
+        return String.format("(id: %s; username: %s; email: %s; address: %s; phoneNumber: %s)",
+                id, username, email, address, phoneNumber);
+    }
+
 }

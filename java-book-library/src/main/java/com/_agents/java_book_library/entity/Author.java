@@ -23,4 +23,10 @@ public class Author {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Book> books;
 
+    @Override
+    public String toString() {
+        return String.format("(id: %s; name: %s, dateOfBirth: %s",
+                id, name, dateOfBirth);
+    }
+
 }
