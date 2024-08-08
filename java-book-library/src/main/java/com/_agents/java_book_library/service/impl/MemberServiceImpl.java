@@ -54,8 +54,12 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "ID", memberId)
         );
-        checkIfUsernameAlreadyExists(memberDto.getUsername());
-        checkIfEmailAlreadyExists(memberDto.getEmail());
+        if (!memberDto.getUsername().equals(member.getUsername())) {
+            checkIfUsernameAlreadyExists(memberDto.getUsername());
+        }
+        if (!memberDto.getEmail().equals(member.getEmail())) {
+            checkIfEmailAlreadyExists(memberDto.getEmail());
+        }
         Member newMember = EntityMapper.mapToMember(memberDto);
         newMember.setId(member.getId());
         memberRepository.save(newMember);
