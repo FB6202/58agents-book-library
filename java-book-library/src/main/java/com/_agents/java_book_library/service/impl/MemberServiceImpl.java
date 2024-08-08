@@ -1,8 +1,8 @@
 package com._agents.java_book_library.service.impl;
 
 import com._agents.java_book_library.entity.Member;
-import com._agents.java_book_library.exception.ResourceAlreadyExistsException;
-import com._agents.java_book_library.exception.ResourceNotFoundException;
+import com._agents.java_book_library.exception.types.ResourceAlreadyExistsException;
+import com._agents.java_book_library.exception.types.ResourceNotFoundException;
 import com._agents.java_book_library.payload.MemberDto;
 import com._agents.java_book_library.repo.MemberRepository;
 import com._agents.java_book_library.service.MemberService;

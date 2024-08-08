@@ -23,5 +23,8 @@
 5) delete member
 
 -- loan --
-1) loan
-2) return
+1) add new loan
+2) get all loans
+3) get loan by id
+4) update loan
+5) delete loan

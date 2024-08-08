@@ -21,7 +21,7 @@ public class Book {
     private Double price;
     private Boolean available;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 

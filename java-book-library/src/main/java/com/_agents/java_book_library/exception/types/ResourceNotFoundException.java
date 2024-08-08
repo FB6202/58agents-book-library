@@ -1,4 +1,4 @@
-package com._agents.java_book_library.exception;
+package com._agents.java_book_library.exception.types;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

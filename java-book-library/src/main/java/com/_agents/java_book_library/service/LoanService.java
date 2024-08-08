@@ -2,10 +2,18 @@ package com._agents.java_book_library.service;
 
 import com._agents.java_book_library.payload.LoanDto;
 
+import java.util.List;
+
 public interface LoanService {
 
-    String loanBooks(LoanDto loanDto);
+    String addLoan(LoanDto loanDto);
 
-    String returnBooks(LoanDto loanDto);
+    List<LoanDto> getAllLoans();
+
+    LoanDto getLoanById(Long loanId);
+
+    String updateLoan(LoanDto loanDto, Long loanId);
+
+    String deleteLoan(Long loanId);
 
 }

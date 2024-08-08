@@ -2,8 +2,8 @@ package com._agents.java_book_library.service.impl;
 
 import com._agents.java_book_library.entity.Author;
 import com._agents.java_book_library.entity.Book;
-import com._agents.java_book_library.exception.ResourceAlreadyExistsException;
-import com._agents.java_book_library.exception.ResourceNotFoundException;
+import com._agents.java_book_library.exception.types.ResourceAlreadyExistsException;
+import com._agents.java_book_library.exception.types.ResourceNotFoundException;
 import com._agents.java_book_library.payload.BookDto;
 import com._agents.java_book_library.repo.AuthorRepository;
 import com._agents.java_book_library.repo.BookRepository;
@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getAvailableBooks() { // ToDo: update to refresh!
+    public List<BookDto> getAvailableBooks() {
         List<Book> books = bookRepository.findAll();
         List<Book> availableBooks = books.stream().filter(Book::getAvailable).toList();
         return availableBooks.stream()

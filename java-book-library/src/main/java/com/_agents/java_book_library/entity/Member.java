@@ -3,6 +3,8 @@ package com._agents.java_book_library.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class Member {
     private String address;
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "member")
-    private Loan loan;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Loan> loans;
 
 }

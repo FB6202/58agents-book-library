@@ -1,7 +1,7 @@
 package com._agents.java_book_library.service.impl;
 
 import com._agents.java_book_library.entity.Author;
-import com._agents.java_book_library.exception.ResourceNotFoundException;
+import com._agents.java_book_library.exception.types.ResourceNotFoundException;
 import com._agents.java_book_library.payload.AuthorDto;
 import com._agents.java_book_library.repo.AuthorRepository;
 import com._agents.java_book_library.service.AuthorService;

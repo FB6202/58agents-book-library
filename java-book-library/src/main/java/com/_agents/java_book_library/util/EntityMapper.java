@@ -30,21 +30,21 @@ public class EntityMapper {
                 .build();
     }
 
-    public static Member mapToMember(MemberDto memberDto) {
-        return Member.builder()
-                .username(memberDto.getUsername())
-                .email(memberDto.getEmail())
-                .address(memberDto.getAddress())
-                .phoneNumber(memberDto.getPhoneNumber())
-                .build();
-    }
-
     public static Loan mapToLoan(LoanDto loanDto, List<Book> books, Member member) {
         return Loan.builder()
                 .loanDate(loanDto.getLoanDate())
                 .returnDate(loanDto.getReturnDate())
                 .books(books)
                 .member(member)
+                .build();
+    }
+
+    public static Member mapToMember(MemberDto memberDto) {
+        return Member.builder()
+                .username(memberDto.getUsername())
+                .email(memberDto.getEmail())
+                .address(memberDto.getAddress())
+                .phoneNumber(memberDto.getPhoneNumber())
                 .build();
     }
 
