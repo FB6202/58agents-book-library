@@ -30,12 +30,10 @@ public class EntityMapper {
                 .build();
     }
 
-    public static Loan mapToLoan(LoanDto loanDto, List<Book> books, Member member) {
+    public static Loan mapToLoan(LoanDto loanDto) {
         return Loan.builder()
                 .loanDate(loanDto.getLoanDate())
                 .returnDate(loanDto.getReturnDate())
-                .books(books)
-                .member(member)
                 .build();
     }
 

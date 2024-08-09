@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,9 @@ public class LoanServiceImpl implements LoanService {
     public String addLoan(LoanDto loanDto) {
         Member member = checkMember(loanDto);
         List<Book> books = checkBooks(loanDto);
-        Loan loan = EntityMapper.mapToLoan(loanDto, books, member);
+        Loan loan = EntityMapper.mapToLoan(loanDto);
+        loan.setMember(member);
+        setLoanToBooks(books, loan);
         updateAvailability(books, false);
         loanRepository.save(loan);
         log.info("New loan added to DB: {}", loan);
@@ -58,16 +61,19 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public String updateLoan(LoanDto loanDto, Long loanId) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow(
-                () -> new ResourceNotFoundException("Loan", "ID", loanId)
+    public String updateLoan(LoanDto loanDto) {
+        Loan loan = loanRepository.findById(loanDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Loan", "ID", loanDto.getId())
         );
-        Member member = checkMember(loanDto);
-        List<Book> books = checkBooks(loanDto);
-        Loan newLoan = EntityMapper.mapToLoan(loanDto, books, member);
-        newLoan.setId(loan.getId());
-        loanRepository.save(newLoan);
-        log.info("Loan with ID '{}' updated successfully to: {}", loanId, newLoan);
+        Member member = memberRepository.findById(loanDto.getMemberDto().getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Member", "ID", loanDto.getMemberDto().getId())
+        );
+        loan.setLoanDate(loanDto.getLoanDate());
+        loan.setReturnDate(loanDto.getReturnDate());
+        loan.setMember(member);
+        // ToDo: compare and update books!
+        Loan updatedLoan = loanRepository.save(loan);
+        log.info("Loan with ID '{}' updated successfully to: {}", updatedLoan.getId(), updatedLoan);
         return "Loan updated successfully.";
     }
 
@@ -113,6 +119,12 @@ public class LoanServiceImpl implements LoanService {
                     return dbBook;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private void setLoanToBooks(List<Book> books, Loan loan) {
+        for (Book book : books) {
+            book.setLoan(loan);
+        }
     }
 
     private void updateAvailability(List<Book> books, boolean available) {

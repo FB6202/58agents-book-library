@@ -12,7 +12,7 @@ public interface AuthorService {
 
     AuthorDto getAuthorById(Long authorId);
 
-    String updateAuthor(AuthorDto authorDto, Long authorId);
+    String updateAuthor(AuthorDto authorDto);
 
     String deleteAuthor(Long authorId);
 

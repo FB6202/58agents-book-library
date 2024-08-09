@@ -32,9 +32,8 @@ public class MemberController {
     }
 
     @PutMapping(path = "/{memberId}")
-    public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto,
-                                               @PathVariable("memberId") Long memberId) {
-        return new ResponseEntity<>(memberService.updateMember(memberDto, memberId), HttpStatus.OK);
+    public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) {
+        return new ResponseEntity<>(memberService.updateMember(memberDto), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{memberId}")

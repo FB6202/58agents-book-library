@@ -50,9 +50,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String updateMember(MemberDto memberDto, Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new ResourceNotFoundException("Member", "ID", memberId)
+    public String updateMember(MemberDto memberDto) {
+        Member member = memberRepository.findById(memberDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Member", "ID", memberDto.getId())
         );
         if (!memberDto.getUsername().equals(member.getUsername())) {
             checkIfUsernameAlreadyExists(memberDto.getUsername());
@@ -61,9 +61,8 @@ public class MemberServiceImpl implements MemberService {
             checkIfEmailAlreadyExists(memberDto.getEmail());
         }
         Member newMember = EntityMapper.mapToMember(memberDto);
-        newMember.setId(member.getId());
         memberRepository.save(newMember);
-        log.info("Member with ID '{}' updated successfully to: {}", memberId, newMember);
+        log.info("Member with ID '{}' updated successfully to: {}", member.getId(), newMember);
         return "Member updated successfully.";
     }
 

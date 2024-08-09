@@ -25,7 +25,7 @@ public class Book {
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loan_id")
+    @JoinColumn(name = "loan_id", referencedColumnName = "id")
     private Loan loan;
 
     @Override

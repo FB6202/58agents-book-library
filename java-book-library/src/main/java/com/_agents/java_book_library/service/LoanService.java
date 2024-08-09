@@ -12,7 +12,7 @@ public interface LoanService {
 
     LoanDto getLoanById(Long loanId);
 
-    String updateLoan(LoanDto loanDto, Long loanId);
+    String updateLoan(LoanDto loanDto);
 
     String deleteLoan(Long loanId);
 

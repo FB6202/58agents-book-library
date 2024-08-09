@@ -12,7 +12,7 @@ public interface MemberService {
 
     MemberDto getMemberById(Long memberId);
 
-    String updateMember(MemberDto memberDto, Long memberId);
+    String updateMember(MemberDto memberDto);
 
     String deleteMember(Long memberId);
 

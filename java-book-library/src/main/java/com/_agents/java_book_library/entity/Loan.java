@@ -20,10 +20,10 @@ public class Loan {
     private LocalDate loanDate;
     private LocalDate returnDate;
 
-    @OneToMany(mappedBy = "loan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
     private List<Book> books;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
     @Override

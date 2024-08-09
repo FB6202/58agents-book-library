@@ -68,17 +68,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String updateBook(BookDto bookDto, Long bookId) {
-        Book book = bookRepository.findById(bookId).orElseThrow(
-                () -> new ResourceNotFoundException("Book", "ID", bookId)
+    public String updateBook(BookDto bookDto) {
+        Book book = bookRepository.findById(bookDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Book", "ID", bookDto.getId())
         );
         Author author = authorRepository.findById(bookDto.getAuthorId()).orElseThrow(
                 () -> new ResourceNotFoundException("Author", "ID", bookDto.getAuthorId())
         );
         Book newBook = EntityMapper.mapToBook(bookDto, author);
-        newBook.setId(book.getId());
         bookRepository.save(newBook);
-        log.info("Book with ID '{}' updated successfully to: {}", bookId, newBook);
+        log.info("Book with ID '{}' updated successfully to: {}", book.getId(), newBook);
         return "Book updated successfully.";
     }
 

@@ -46,14 +46,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public String updateAuthor(AuthorDto authorDto, Long authorId) {
-        Author author = authorRepository.findById(authorId).orElseThrow(
-                () -> new ResourceNotFoundException("Author", "ID", authorId)
+    public String updateAuthor(AuthorDto authorDto) {
+        Author author = authorRepository.findById(authorDto.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Author", "ID", authorDto.getId())
         );
         Author newAuthor = EntityMapper.mapToAuthor(authorDto);
-        newAuthor.setId(author.getId());
         authorRepository.save(newAuthor);
-        log.info("Author with ID '{}' updated successfully to: {}", authorId, newAuthor);
+        log.info("Author with ID '{}' updated successfully to: {}", author.getId(), newAuthor);
         return "Author updated successfully.";
     }
 
