@@ -23,10 +23,10 @@ public class Member {
     private String address;
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Loan> loans;
 
-    @Override
+    @Override // creating a custom and consistent toString design for the application logs + preventing stack overflow
     public String toString() {
         return String.format("(id: %s; username: %s; email: %s; address: %s; phoneNumber: %s)",
                 id, username, email, address, phoneNumber);

@@ -34,11 +34,13 @@ public class LoanServiceImpl implements LoanService {
     public String addLoan(LoanDto loanDto) {
         Member member = checkMember(loanDto);
         List<Book> books = checkBooks(loanDto);
+
         Loan loan = EntityMapper.mapToLoan(loanDto);
         loan.setMember(member);
         setLoanToBooks(books, loan);
         updateAvailability(books, false);
         loanRepository.save(loan);
+
         log.info("New loan added to DB: {}", loan);
         return "Loan saved successfully.";
     }
@@ -67,11 +69,13 @@ public class LoanServiceImpl implements LoanService {
         Member member = memberRepository.findById(loanDto.getMemberDto().getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "ID", loanDto.getMemberDto().getId())
         );
+
         loan.setLoanDate(loanDto.getLoanDate());
         loan.setReturnDate(loanDto.getReturnDate());
         loan.setMember(member);
         compareAndUpdateBooks(loan, loanDto);
         Loan updatedLoan = loanRepository.save(loan);
+
         log.info("Loan with ID '{}' updated successfully to: {}", updatedLoan.getId(), updatedLoan);
         return "Loan updated successfully.";
     }
@@ -81,9 +85,11 @@ public class LoanServiceImpl implements LoanService {
         Loan loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new ResourceNotFoundException("Loan", "ID", loanId)
         );
+
         updateAvailability(loan.getBooks(), true);
         updateBooks(loan.getBooks());
         loanRepository.delete(loan);
+
         log.info("Loan deleted with ID '{}'.", loanId);
         return "Loan deleted successfully.";
     }
@@ -143,8 +149,7 @@ public class LoanServiceImpl implements LoanService {
         List<Long> currentLoanedBookIds = loan.getBooks().stream()
                 .map(Book::getId)
                 .toList();
-        List<BookDto> newBookDtoList = loanDto.getBooks();
-        List<Book> newBooks = newBookDtoList.stream()
+        List<Book> newBooks = loanDto.getBooks().stream()
                 .map(book -> bookRepository.findById(book.getId()).orElseThrow(
                         () -> new ResourceNotFoundException("Book", "ID", book.getId())
                 ))
@@ -156,7 +161,6 @@ public class LoanServiceImpl implements LoanService {
         // added books
         for (Long id : newBookIds) {
             if (!currentLoanedBookIds.contains(id)) {
-                // check and update loan availability
                 Book book = bookRepository.findById(id).orElseThrow(
                         () -> new ResourceNotFoundException("Book", "ID", id)
                 );

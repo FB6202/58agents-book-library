@@ -32,12 +32,13 @@ public class BookServiceImpl implements BookService {
         if (optBook.isPresent()) {
             throw new ResourceAlreadyExistsException("Book title already exists.");
         }
-
         Author author = authorRepository.findById(bookDto.getAuthorId()).orElseThrow(
                 () -> new ResourceNotFoundException("Author", "ID", bookDto.getAuthorId())
         );
+
         Book book = EntityMapper.mapToBook(bookDto, author);
         bookRepository.save(book);
+
         log.info("New book added to DB: {}", book);
         return "Book saved successfully.";
     }
@@ -75,8 +76,10 @@ public class BookServiceImpl implements BookService {
         Author author = authorRepository.findById(bookDto.getAuthorId()).orElseThrow(
                 () -> new ResourceNotFoundException("Author", "ID", bookDto.getAuthorId())
         );
+
         Book newBook = EntityMapper.mapToBook(bookDto, author);
         bookRepository.save(newBook);
+
         log.info("Book with ID '{}' updated successfully to: {}", book.getId(), newBook);
         return "Book updated successfully.";
     }
@@ -86,7 +89,9 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookId).orElseThrow(
                 () -> new ResourceNotFoundException("Book", "ID", bookId)
         );
+
         bookRepository.delete(book);
+
         log.info("Book deleted with ID '{}'.", bookId);
         return "Book deleted successfully.";
     }

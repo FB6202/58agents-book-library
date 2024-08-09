@@ -25,6 +25,7 @@ public class AuthorServiceImpl implements AuthorService {
     public String addAuthor(AuthorDto authorDto) {
         Author author = EntityMapper.mapToAuthor(authorDto);
         authorRepository.save(author);
+
         log.info("New author added to db: {}", author);
         return "Author saved successfully.";
     }
@@ -50,8 +51,10 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = authorRepository.findById(authorDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Author", "ID", authorDto.getId())
         );
+
         Author newAuthor = EntityMapper.mapToAuthor(authorDto);
         authorRepository.save(newAuthor);
+
         log.info("Author with ID '{}' updated successfully to: {}", author.getId(), newAuthor);
         return "Author updated successfully.";
     }
@@ -61,7 +64,9 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = authorRepository.findById(authorId).orElseThrow(
                 () -> new ResourceNotFoundException("Author", "ID", authorId)
         );
+
         authorRepository.delete(author);
+
         log.info("Author deleted with ID '{}'.", authorId);
         return "Author deleted successfully.";
     }

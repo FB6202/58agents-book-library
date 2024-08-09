@@ -27,8 +27,10 @@ public class MemberServiceImpl implements MemberService {
     public String addMember(MemberDto memberDto) {
         checkIfUsernameAlreadyExists(memberDto.getUsername());
         checkIfEmailAlreadyExists(memberDto.getEmail());
+
         Member member = EntityMapper.mapToMember(memberDto);
         memberRepository.save(member);
+
         log.info("New member added to DB: {}", member);
         return "Member added successfully.";
     }
@@ -54,14 +56,17 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "ID", memberDto.getId())
         );
+
         if (!memberDto.getUsername().equals(member.getUsername())) {
             checkIfUsernameAlreadyExists(memberDto.getUsername());
         }
         if (!memberDto.getEmail().equals(member.getEmail())) {
             checkIfEmailAlreadyExists(memberDto.getEmail());
         }
+
         Member newMember = EntityMapper.mapToMember(memberDto);
         memberRepository.save(newMember);
+
         log.info("Member with ID '{}' updated successfully to: {}", member.getId(), newMember);
         return "Member updated successfully.";
     }
@@ -71,7 +76,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new ResourceNotFoundException("Member", "ID", memberId)
         );
+
         memberRepository.delete(member);
+
         log.info("Member deleted with ID '{}'.", memberId);
         return "Member deleted successfully.";
     }

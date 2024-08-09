@@ -23,7 +23,7 @@ public class Author {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Book> books;
 
-    @Override
+    @Override // creating a custom and consistent toString design for the application logs + preventing stack overflow
     public String toString() {
         return String.format("(id: %s; name: %s, dateOfBirth: %s",
                 id, name, dateOfBirth);

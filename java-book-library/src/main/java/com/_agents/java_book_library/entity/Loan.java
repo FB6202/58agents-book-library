@@ -20,13 +20,13 @@ public class Loan {
     private LocalDate loanDate;
     private LocalDate returnDate;
 
-    @OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "loan", fetch = FetchType.LAZY)
     private List<Book> books;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
-    @Override
+    @Override // creating a custom and consistent toString design for the application logs + preventing stack overflow
     public String toString() {
         return String.format("(id: %s; loanDate: %s; returnDate: %s, member: %s)",
                 id, loanDate, returnDate, member.getUsername());

@@ -28,7 +28,7 @@ public class Book {
     @JoinColumn(name = "loan_id", referencedColumnName = "id")
     private Loan loan;
 
-    @Override
+    @Override // creating a custom and consistent toString design for the application logs + preventing stack overflow
     public String toString() {
         return String.format("(id: %s; title: %s; genre: %s; price: %s; available: %s, author: %s)",
                 id, title, genre, price, available, author.getName());
