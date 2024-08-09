@@ -73,7 +73,6 @@ public class LoanServiceImpl implements LoanService {
         loan.setLoanDate(loanDto.getLoanDate());
         loan.setReturnDate(loanDto.getReturnDate());
         loan.setMember(member);
-        compareAndUpdateBooks(loan, loanDto);
         Loan updatedLoan = loanRepository.save(loan);
 
         log.info("Loan with ID '{}' updated successfully to: {}", updatedLoan.getId(), updatedLoan);
@@ -142,45 +141,6 @@ public class LoanServiceImpl implements LoanService {
     private void updateBooks(List<Book> books) {
         for (Book book : books) {
             book.setLoan(null);
-        }
-    }
-
-    private void compareAndUpdateBooks(Loan loan, LoanDto loanDto) {
-        List<Long> currentLoanedBookIds = loan.getBooks().stream()
-                .map(Book::getId)
-                .toList();
-        List<Book> newBooks = loanDto.getBooks().stream()
-                .map(book -> bookRepository.findById(book.getId()).orElseThrow(
-                        () -> new ResourceNotFoundException("Book", "ID", book.getId())
-                ))
-                .toList();
-        List<Long> newBookIds = newBooks.stream()
-                .map(Book::getId)
-                .toList();
-
-        // added books
-        for (Long id : newBookIds) {
-            if (!currentLoanedBookIds.contains(id)) {
-                Book book = bookRepository.findById(id).orElseThrow(
-                        () -> new ResourceNotFoundException("Book", "ID", id)
-                );
-                if (!book.getAvailable()) {
-                    throw new ResourceUnavailableException("Book '" + book.getId() + "' currently unavailable.");
-                }
-                book.setAvailable(false);
-                book.setLoan(loan);
-            }
-        }
-
-        // removed books
-        for (Long id : currentLoanedBookIds) {
-            if (!newBookIds.contains(id)) {
-                Book book = bookRepository.findById(id).orElseThrow(
-                        () -> new ResourceNotFoundException("Book", "ID", id)
-                );
-                book.setLoan(null);
-                book.setAvailable(true);
-            }
         }
     }
 
