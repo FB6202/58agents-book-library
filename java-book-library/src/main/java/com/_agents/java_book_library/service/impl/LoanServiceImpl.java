@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +70,7 @@ public class LoanServiceImpl implements LoanService {
         loan.setLoanDate(loanDto.getLoanDate());
         loan.setReturnDate(loanDto.getReturnDate());
         loan.setMember(member);
-        // ToDo: compare and update books!
+        compareAndUpdateBooks(loan, loanDto);
         Loan updatedLoan = loanRepository.save(loan);
         log.info("Loan with ID '{}' updated successfully to: {}", updatedLoan.getId(), updatedLoan);
         return "Loan updated successfully.";
@@ -83,6 +82,7 @@ public class LoanServiceImpl implements LoanService {
                 () -> new ResourceNotFoundException("Loan", "ID", loanId)
         );
         updateAvailability(loan.getBooks(), true);
+        updateBooks(loan.getBooks());
         loanRepository.delete(loan);
         log.info("Loan deleted with ID '{}'.", loanId);
         return "Loan deleted successfully.";
@@ -130,6 +130,53 @@ public class LoanServiceImpl implements LoanService {
     private void updateAvailability(List<Book> books, boolean available) {
         for (Book book : books) {
             book.setAvailable(available);
+        }
+    }
+
+    private void updateBooks(List<Book> books) {
+        for (Book book : books) {
+            book.setLoan(null);
+        }
+    }
+
+    private void compareAndUpdateBooks(Loan loan, LoanDto loanDto) {
+        List<Long> currentLoanedBookIds = loan.getBooks().stream()
+                .map(Book::getId)
+                .toList();
+        List<BookDto> newBookDtoList = loanDto.getBooks();
+        List<Book> newBooks = newBookDtoList.stream()
+                .map(book -> bookRepository.findById(book.getId()).orElseThrow(
+                        () -> new ResourceNotFoundException("Book", "ID", book.getId())
+                ))
+                .toList();
+        List<Long> newBookIds = newBooks.stream()
+                .map(Book::getId)
+                .toList();
+
+        // added books
+        for (Long id : newBookIds) {
+            if (!currentLoanedBookIds.contains(id)) {
+                // check and update loan availability
+                Book book = bookRepository.findById(id).orElseThrow(
+                        () -> new ResourceNotFoundException("Book", "ID", id)
+                );
+                if (!book.getAvailable()) {
+                    throw new ResourceUnavailableException("Book '" + book.getId() + "' currently unavailable.");
+                }
+                book.setAvailable(false);
+                book.setLoan(loan);
+            }
+        }
+
+        // removed books
+        for (Long id : currentLoanedBookIds) {
+            if (!newBookIds.contains(id)) {
+                Book book = bookRepository.findById(id).orElseThrow(
+                        () -> new ResourceNotFoundException("Book", "ID", id)
+                );
+                book.setLoan(null);
+                book.setAvailable(true);
+            }
         }
     }
 
