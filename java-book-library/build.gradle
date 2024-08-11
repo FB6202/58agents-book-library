@@ -19,6 +19,10 @@ configurations {
 	}
 }
 
+bootJar {
+	archiveFileName = 'java-book-library.jar'
+}
+
 repositories {
 	mavenCentral()
 }

@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  postgres-database:
+    image: postgres
+    ports:
+      - 5432:5432
+    env_file:
+      - variables.env
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+
+  java-book-library:
+    image: 58agents/java-book-library
+    ports:
+      - 8080:8080
+    env_file:
+      - variables.env
+    depends_on:
+      - postgres-database
+    volumes:
+      - ./java-book-library/:/var/lib/java-book-library
+    restart: always

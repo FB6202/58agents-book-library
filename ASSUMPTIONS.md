@@ -12,3 +12,6 @@
 -> considering that the data transfer objects coming from the client minimize error possibilities
 -> validation would be performed on both sides!
 -> in order to update books of a loan you can delete the old loan and add a new one (easier for the frontend)
+
+## info
+-> actually you can build the docker image via spring-boot-plugin from gradle (bootBuildImage task)
