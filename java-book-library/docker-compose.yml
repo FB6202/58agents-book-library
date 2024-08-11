@@ -13,7 +13,7 @@ services:
     restart: always
 
   java-book-library:
-    image: 58agents/java-book-library
+    image: fb6202/58agents-book-library
     ports:
       - 8080:8080
     env_file:

@@ -14,4 +14,4 @@
 -> in order to update books of a loan you can delete the old loan and add a new one (easier for the frontend)
 
 ## info
--> actually you can build the docker image via spring-boot-plugin from gradle (bootBuildImage task)
+-> actually you can build the docker image via spring-boot-plugin from gradle as well (bootBuildImage task)
